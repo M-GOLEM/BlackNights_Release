@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/level_01_wake.gd" id="1_lvl"]
+[ext_resource type="PackedScene" path="res://scenes/player/CharacterRoot.tscn" id="2_char"]
+[ext_resource type="Script" path="res://scripts/systems/level_manager.gd" id="3_lm"]
+
+[node name="Level_01_Wake" type="Node2D"]
+script = ExtResource("1_lvl")
+chapter = 1
+level_width = 3200.0
+level_height = 1080.0
+start_pos = Vector2(400, 560)
+finish_pos = Vector2(3060, 620)
+title_en = "CHAPTER I"
+title_ar = "الاستيقاظ"
+next_level = "res://scenes/levels/Level_02_Flooded.tscn"
+camera_y = 420.0
+
+[node name="CharacterRoot" parent="." instance=ExtResource("2_char")]
+position = Vector2(400, 560)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+limit_left = 0
+limit_top = 0
+limit_right = 3200
+limit_bottom = 1080
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("3_lm")
+chapter_index = 1
+chapter_title_en = "CHAPTER I"
+chapter_title_ar = "الاستيقاظ"
+next_level_path = "res://scenes/levels/Level_02_Flooded.tscn"
+spawn_point = Vector2(400, 560)

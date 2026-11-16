@@ -1,0 +1,444 @@
+[gd_scene load_steps=32 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/character_controller.gd" id="1_ctrl"]
+[ext_resource type="Script" path="res://scripts/player/character_animator.gd" id="2_anim"]
+[ext_resource type="Script" path="res://scripts/player/character_model.gd" id="3_model"]
+
+[sub_resource type="CapsuleShape2D" id="Capsule_body"]
+radius = 14.0
+height = 120.0
+
+[sub_resource type="Gradient" id="Gradient_shadow"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0.85, 0, 0, 0, 0.4, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="Tex_shadow"]
+gradient = SubResource("Gradient_shadow")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Environment" id="Env_char"]
+background_mode = 1
+background_color = Color(0.09, 0.095, 0.115, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.34, 0.37, 0.45, 1)
+ambient_light_energy = 0.55
+tonemap_mode = 3
+
+[sub_resource type="StandardMaterial3D" id="Mat_cloak"]
+albedo_color = Color(0.105, 0.112, 0.135, 1)
+roughness = 0.93
+rim_enabled = true
+rim = 0.2
+rim_tint = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_cloth"]
+albedo_color = Color(0.17, 0.175, 0.205, 1)
+roughness = 0.97
+rim_enabled = true
+rim = 0.22
+rim_tint = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_hood"]
+albedo_color = Color(0.078, 0.082, 0.102, 1)
+roughness = 0.95
+rim_enabled = true
+rim = 0.45
+rim_tint = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Mat_skin"]
+albedo_color = Color(0.55, 0.44, 0.37, 1)
+roughness = 0.55
+rim_enabled = true
+rim = 0.4
+rim_tint = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_leather"]
+albedo_color = Color(0.095, 0.07, 0.06, 1)
+roughness = 0.5
+metallic = 0.08
+rim_enabled = true
+rim = 0.2
+rim_tint = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_scarf"]
+albedo_color = Color(0.3, 0.065, 0.075, 1)
+roughness = 0.98
+rim_enabled = true
+rim = 0.38
+rim_tint = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_eye"]
+albedo_color = Color(0.8, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.5, 0.72, 1, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="CapsuleMesh" id="Mesh_pelvis"]
+material = SubResource("Mat_cloth")
+radius = 0.055
+height = 0.16
+radial_segments = 16
+rings = 6
+
+[sub_resource type="CapsuleMesh" id="Mesh_torso"]
+material = SubResource("Mat_cloak")
+radius = 0.078
+height = 0.22
+radial_segments = 18
+rings = 8
+
+[sub_resource type="CylinderMesh" id="Mesh_cloak"]
+material = SubResource("Mat_cloak")
+top_radius = 0.085
+bottom_radius = 0.17
+height = 0.36
+radial_segments = 18
+rings = 1
+cap_top = false
+
+[sub_resource type="CylinderMesh" id="Mesh_neck"]
+material = SubResource("Mat_skin")
+top_radius = 0.026
+bottom_radius = 0.032
+height = 0.055
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="Mesh_belt"]
+material = SubResource("Mat_leather")
+top_radius = 0.086
+bottom_radius = 0.086
+height = 0.038
+radial_segments = 18
+
+[sub_resource type="SphereMesh" id="Mesh_head"]
+material = SubResource("Mat_skin")
+radius = 0.062
+height = 0.124
+radial_segments = 20
+rings = 10
+
+[sub_resource type="SphereMesh" id="Mesh_hood"]
+material = SubResource("Mat_hood")
+radius = 0.078
+height = 0.156
+radial_segments = 20
+rings = 10
+
+[sub_resource type="SphereMesh" id="Mesh_eye"]
+material = SubResource("Mat_eye")
+radius = 0.011
+height = 0.022
+radial_segments = 10
+rings = 6
+
+[sub_resource type="TorusMesh" id="Mesh_scarf_collar"]
+material = SubResource("Mat_scarf")
+inner_radius = 0.052
+outer_radius = 0.085
+rings = 24
+ring_segments = 8
+
+[sub_resource type="CapsuleMesh" id="Mesh_scarf"]
+material = SubResource("Mat_scarf")
+radius = 0.016
+height = 0.09
+radial_segments = 10
+rings = 4
+
+[sub_resource type="CapsuleMesh" id="Mesh_upperarm"]
+material = SubResource("Mat_cloak")
+radius = 0.027
+height = 0.16
+radial_segments = 12
+rings = 5
+
+[sub_resource type="CapsuleMesh" id="Mesh_forearm"]
+material = SubResource("Mat_cloak")
+radius = 0.023
+height = 0.15
+radial_segments = 12
+rings = 5
+
+[sub_resource type="SphereMesh" id="Mesh_hand"]
+material = SubResource("Mat_leather")
+radius = 0.029
+height = 0.06
+radial_segments = 12
+rings = 6
+
+[sub_resource type="CapsuleMesh" id="Mesh_thigh"]
+material = SubResource("Mat_cloth")
+radius = 0.043
+height = 0.265
+radial_segments = 14
+rings = 6
+
+[sub_resource type="CapsuleMesh" id="Mesh_shin"]
+material = SubResource("Mat_cloth")
+radius = 0.035
+height = 0.215
+radial_segments = 14
+rings = 6
+
+[sub_resource type="CapsuleMesh" id="Mesh_boot"]
+material = SubResource("Mat_leather")
+radius = 0.036
+height = 0.135
+radial_segments = 14
+rings = 6
+
+[sub_resource type="TorusMesh" id="Mesh_hood_brim"]
+material = SubResource("Mat_hood")
+inner_radius = 0.056
+outer_radius = 0.08
+rings = 24
+ring_segments = 8
+
+[node name="CharacterRoot" type="CharacterBody2D" groups=["player"]]
+motion_mode = 0
+floor_snap_length = 4.0
+floor_max_angle = 0.785398
+script = ExtResource("1_ctrl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -60)
+shape = SubResource("Capsule_body")
+
+[node name="ShadowSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+z_index = 1
+scale = Vector2(0.62, 0.24)
+texture = SubResource("Tex_shadow")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+position = Vector2(-163.84, -327.68)
+z_index = 2
+scale = Vector2(0.32, 0.32)
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+msaa_3d = 1
+size = Vector2i(1024, 1024)
+render_target_update_mode = 3
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Env_char")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
+rotation_degrees = Vector3(-52, -32, 0)
+light_color = Color(1, 0.95, 0.88, 1)
+light_energy = 1.2
+shadow_enabled = true
+shadow_bias = 0.03
+shadow_blur = 1.2
+shadow_opacity = 0.85
+directional_shadow_mode = 0
+directional_shadow_max_distance = 12.0
+
+[node name="RimLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
+rotation_degrees = Vector3(-18, 152, 0)
+light_color = Color(0.5, 0.62, 0.85, 1)
+light_energy = 0.75
+
+[node name="FillLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport"]
+position = Vector3(-1.1, 1.15, 1.7)
+light_color = Color(1, 0.74, 0.55, 1)
+light_energy = 0.4
+omni_range = 3.5
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+position = Vector3(0, 1.2, 3)
+projection = 1
+current = true
+size = 2.0
+
+[node name="Character3D" type="Node3D" parent="SubViewportContainer/SubViewport"]
+position = Vector3(0, 0.24, 0)
+script = ExtResource("2_anim")
+
+[node name="Visual" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D"]
+script = ExtResource("3_model")
+
+[node name="Hips" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual"]
+position = Vector3(0, 0.5, 0)
+
+[node name="Pelvis" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips"]
+mesh = SubResource("Mesh_pelvis")
+
+[node name="Belt" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips"]
+position = Vector3(0, 0.058, 0)
+mesh = SubResource("Mesh_belt")
+
+[node name="Spine" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips"]
+position = Vector3(0, 0.03, 0)
+
+[node name="Chest" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine"]
+position = Vector3(0, 0.1, 0)
+
+[node name="Torso" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest"]
+position = Vector3(0, 0.045, 0)
+scale = Vector3(1, 1, 0.78)
+mesh = SubResource("Mesh_torso")
+
+[node name="Cloak" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest"]
+position = Vector3(0, -0.13, -0.012)
+scale = Vector3(1, 1, 0.85)
+mesh = SubResource("Mesh_cloak")
+
+[node name="ShoulderL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest"]
+position = Vector3(0.145, 0.105, 0)
+
+[node name="UpperArmL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderL"]
+position = Vector3(0, -0.075, 0)
+mesh = SubResource("Mesh_upperarm")
+
+[node name="ElbowL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderL"]
+position = Vector3(0, -0.15, 0)
+
+[node name="ForeArmL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderL/ElbowL"]
+position = Vector3(0, -0.07, 0)
+mesh = SubResource("Mesh_forearm")
+
+[node name="WristL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderL/ElbowL"]
+position = Vector3(0, -0.14, 0)
+
+[node name="HandL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderL/ElbowL/WristL"]
+position = Vector3(0, -0.025, 0.005)
+scale = Vector3(0.85, 1.1, 0.75)
+mesh = SubResource("Mesh_hand")
+
+[node name="ShoulderR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest"]
+position = Vector3(-0.145, 0.105, 0)
+
+[node name="UpperArmR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderR"]
+position = Vector3(0, -0.075, 0)
+mesh = SubResource("Mesh_upperarm")
+
+[node name="ElbowR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderR"]
+position = Vector3(0, -0.15, 0)
+
+[node name="ForeArmR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderR/ElbowR"]
+position = Vector3(0, -0.07, 0)
+mesh = SubResource("Mesh_forearm")
+
+[node name="WristR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderR/ElbowR"]
+position = Vector3(0, -0.14, 0)
+
+[node name="HandR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/ShoulderR/ElbowR/WristR"]
+position = Vector3(0, -0.025, 0.005)
+scale = Vector3(0.85, 1.1, 0.75)
+mesh = SubResource("Mesh_hand")
+
+[node name="Neck" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest"]
+position = Vector3(0, 0.125, 0)
+
+[node name="NeckMesh" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck"]
+position = Vector3(0, 0.015, 0)
+mesh = SubResource("Mesh_neck")
+
+[node name="ScarfCollar" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck"]
+position = Vector3(0, 0.012, 0)
+rotation_degrees = Vector3(6, 0, 0)
+scale = Vector3(1, 0.7, 1)
+mesh = SubResource("Mesh_scarf_collar")
+
+[node name="HeadPivot" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck"]
+position = Vector3(0, 0.035, 0)
+
+[node name="Head" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/HeadPivot"]
+position = Vector3(0, 0.055, 0.008)
+scale = Vector3(0.94, 1.04, 0.96)
+mesh = SubResource("Mesh_head")
+
+[node name="Hood" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/HeadPivot"]
+position = Vector3(0, 0.06, -0.018)
+scale = Vector3(1.02, 1, 1.02)
+mesh = SubResource("Mesh_hood")
+
+[node name="HoodBrim" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/HeadPivot"]
+position = Vector3(0, 0.055, 0.045)
+rotation_degrees = Vector3(90, 0, 0)
+scale = Vector3(0.94, 1.08, 1)
+mesh = SubResource("Mesh_hood_brim")
+
+[node name="EyeL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/HeadPivot"]
+position = Vector3(0.023, 0.062, 0.068)
+scale = Vector3(1.1, 1.25, 0.6)
+mesh = SubResource("Mesh_eye")
+
+[node name="EyeR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/HeadPivot"]
+position = Vector3(-0.023, 0.062, 0.068)
+scale = Vector3(1.1, 1.25, 0.6)
+mesh = SubResource("Mesh_eye")
+
+[node name="ScarfRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck"]
+position = Vector3(0.1, 0.005, 0.02)
+
+[node name="Scarf1" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/ScarfRoot"]
+position = Vector3(0, -0.045, 0)
+mesh = SubResource("Mesh_scarf")
+
+[node name="ScarfLink1" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/ScarfRoot"]
+position = Vector3(0, -0.09, 0)
+
+[node name="Scarf2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/ScarfRoot/ScarfLink1"]
+position = Vector3(0, -0.045, 0)
+mesh = SubResource("Mesh_scarf")
+
+[node name="ScarfLink2" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/ScarfRoot/ScarfLink1"]
+position = Vector3(0, -0.09, 0)
+
+[node name="Scarf3" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/Spine/Chest/Neck/ScarfRoot/ScarfLink1/ScarfLink2"]
+position = Vector3(0, -0.045, 0)
+scale = Vector3(0.85, 1, 0.85)
+mesh = SubResource("Mesh_scarf")
+
+[node name="HipL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips"]
+position = Vector3(0.058, 0, 0)
+
+[node name="ThighL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipL"]
+position = Vector3(0, -0.12, 0)
+mesh = SubResource("Mesh_thigh")
+
+[node name="KneeL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipL"]
+position = Vector3(0, -0.24, 0)
+
+[node name="ShinL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipL/KneeL"]
+position = Vector3(0, -0.1, 0)
+mesh = SubResource("Mesh_shin")
+
+[node name="AnkleL" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipL/KneeL"]
+position = Vector3(0, -0.195, 0)
+
+[node name="FootL" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipL/KneeL/AnkleL"]
+position = Vector3(0, -0.028, 0.038)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("Mesh_boot")
+
+[node name="HipR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips"]
+position = Vector3(-0.058, 0, 0)
+
+[node name="ThighR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipR"]
+position = Vector3(0, -0.12, 0)
+mesh = SubResource("Mesh_thigh")
+
+[node name="KneeR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipR"]
+position = Vector3(0, -0.24, 0)
+
+[node name="ShinR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipR/KneeR"]
+position = Vector3(0, -0.1, 0)
+mesh = SubResource("Mesh_shin")
+
+[node name="AnkleR" type="Node3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipR/KneeR"]
+position = Vector3(0, -0.195, 0)
+
+[node name="FootR" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Character3D/Visual/Hips/HipR/KneeR/AnkleR"]
+position = Vector3(0, -0.028, 0.038)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("Mesh_boot")

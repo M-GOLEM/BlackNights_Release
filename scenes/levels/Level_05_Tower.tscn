@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/level_05_tower.gd" id="1_lvl"]
+[ext_resource type="PackedScene" path="res://scenes/player/CharacterRoot.tscn" id="2_char"]
+[ext_resource type="Script" path="res://scripts/systems/level_manager.gd" id="3_lm"]
+
+[node name="Level_05_Tower" type="Node2D"]
+script = ExtResource("1_lvl")
+chapter = 5
+level_width = 1400.0
+level_height = 3400.0
+start_pos = Vector2(300, 3180)
+finish_pos = Vector2(350, 700)
+title_en = "CHAPTER V"
+title_ar = "البرج"
+next_level = "res://scenes/levels/Level_06_Lab.tscn"
+follow_vertical = true
+fall_limit = 3600.0
+camera_y = 2860.0
+
+[node name="CharacterRoot" parent="." instance=ExtResource("2_char")]
+position = Vector2(300, 3180)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(700, 2860)
+limit_left = 0
+limit_top = 0
+limit_right = 1400
+limit_bottom = 3400
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("3_lm")
+chapter_index = 5
+chapter_title_en = "CHAPTER V"
+chapter_title_ar = "البرج"
+next_level_path = "res://scenes/levels/Level_06_Lab.tscn"
+spawn_point = Vector2(300, 3180)
+follow_vertical = true
+fall_limit = 3600.0
