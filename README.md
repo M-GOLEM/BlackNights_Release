@@ -224,10 +224,3 @@ BlackNights_Release/
   <br>
   <sub>صُنعت بالليل على Godot 4 · v1.0</sub>
 </div>
-
----
-
-<div align="center">
-  <sub>Built by <a href="https://github.com/M-GOLEM"><b>Mr.GOLEM</b></a> ·
-  watch the work on <a href="https://www.youtube.com/@golemsec">YouTube — GOLEM SEC</a></sub>
-</div>
